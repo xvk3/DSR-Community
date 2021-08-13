@@ -1,4 +1,5 @@
 
+[DSR-Community Website](http://www.xvk3.net/glue.php)
 
 - [ ] Speed up API usage, group steamids together
 - [ ] Highlight DSR players
