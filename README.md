@@ -2,6 +2,8 @@
 [DSR-Community Website](http://www.xvk3.net/glue.php)
 
 - [ ] Speed up API usage, group steamids together
-- [ ] Highlight DSR players
-- [ ] Better frontend, CSS, divs and container
+- [x] Highlight DSR players
+- [x] Better frontend, CSS, divs and container
 - [ ] Option to add your own SteamID???
+- [ ] Automatically choose number of columns based on container width
+- [ ] Add support for Discord embeds
