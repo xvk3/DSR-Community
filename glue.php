@@ -1,80 +1,7 @@
 <!DOCTYPE html>
 <html>
-  
-  <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-    <title>DSR-Community</title>
-    <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0 auto;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      width: 950px;
-    }
-
-    .container > .reg,
-    .container > .dsr {
-      margin: 5px;
-      padding: 10px;
-      background: #242322;
-      border-radius: 5px;
-      flex: 0 46%;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    }
-
-    .container > div h1 {
-      margin: 5px;
-      color: #eba434;
-      font-size: 1em;
-      text-shadow: 4px 2px rgba(0, 0, 0, 0.75);
-    }
-
-    .container > div img {
-      float: left;
-      margin-right: 12px;
-      border-radius: 15px;
-    }
-
-    .dsr img {
-      /*border: 3px solid rgba(94, 214, 96, 0.5); */
-      box-shadow: rgba(94, 214, 96, 0.5) 0px 0px 0px 3px,
-      rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
-      rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-    }
-
-    .reg p,
-    .dsr p {
-      color: #fff;
-      margin: 5px;
-    }
-
-    .reg a,
-    .dsr a {
-      font-size: 1.25em;
-      top: 0;
-      color: #999;
-      text-shadow: 4px 2px rgba(0, 0, 0, 0.25);
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-
-    .dsr a{
-      color: rgb(94, 214, 96, 0.5);
-    }
-
-    </style>
-  </head>
-  <body>
-  <?php
+ 
+<?php
 
   // include steam key
   include("config.php"); 
@@ -157,8 +84,89 @@
   // since there is the possibility there multiple calls to GetPlayerSummaries this will result in multiple json objects
   // i need to combine them here into a single array which the following code will use
   // just extract the ['player'][x] from all arrays and build a master
+  ?>
 
-  echo "<div class=\"container\">";
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>DSR-Community</title>
+    <meta content="DSR-Community" property="go:title" />
+  <?php
+    echo "  <meta content=\"Monitoring " . count($master) . " Steam Profiles\" property=\"og:description\" />\n";
+  ?>
+    <meta content="http://www.xvk3.net/glue.php" property="og:url" />
+    <meta content="#99FFCA" name="theme-color" />
+    <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0 auto;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 950px;
+    }
+
+    .container > .reg,
+    .container > .dsr {
+      margin: 5px;
+      padding: 10px;
+      background: #242322;
+      border-radius: 5px;
+      flex: 0 46%;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .container > div h1 {
+      margin: 5px;
+      color: #eba434;
+      font-size: 1em;
+      text-shadow: 4px 2px rgba(0, 0, 0, 0.75);
+    }
+
+    .container > div img {
+      float: left;
+      margin-right: 12px;
+      border-radius: 15px;
+    }
+
+    .dsr img {
+      /*border: 3px solid rgba(94, 214, 96, 0.5); */
+      box-shadow: rgba(94, 214, 96, 0.5) 0px 0px 0px 3px,
+      rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+      rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    }
+
+    .reg p,
+    .dsr p {
+      color: #fff;
+      margin: 5px;
+    }
+
+    .reg a,
+    .dsr a {
+      font-size: 1.25em;
+      top: 0;
+      color: #999;
+      text-shadow: 4px 2px rgba(0, 0, 0, 0.25);
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .dsr a{
+      color: rgb(94, 214, 96, 0.5);
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+  <?php
 
   // do a first pass over the array and print those who are ingame
   for($i = 0; $i < count($sub); $i+=1)  {
@@ -167,7 +175,8 @@
       display_dsr($player);
     }
   }
-  
+ 
+  // second pass for everyone else 
   for($i = 0; $i < count($sub); $i+=1)  {
     $player = $obj['response']['players']['player'][$i];
     if($player['gameid'] != "570940") {
@@ -175,24 +184,22 @@
     }
   }
 
-  echo "</div>";
-
   function display_dsr($player) {
-    echo "<div class=\"dsr\">";
-    echo "<img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">";
-    echo "<a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>";
-    echo "<h1>" . $player['gameextrainfo'] . "</h1>";
-    echo "<p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>";
-    echo "</div>\n";
+    echo "    <div class=\"dsr\">\n";
+    echo "      <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
+    echo "      <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
+    echo "      <h1>" . $player['gameextrainfo'] . "</h1>\n";
+    echo "      <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
+    echo "    </div>\n";
   }
 
   function display($player) {
-    echo "<div class=\"reg\">";
-    echo "<img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">";
-    echo "<a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>";
-    echo "<h1>" . $player['gameextrainfo'] . "</h1>";
-    echo "<p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>";
-    echo "</div>\n";
+    echo "    <div class=\"reg\">\n";
+    echo "      <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
+    echo "      <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
+    echo "      <h1>" . $player['gameextrainfo'] . "</h1>\n";
+    echo "      <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
+    echo "    </div>\n";
   }
 
 /* 
@@ -247,6 +254,8 @@
   }*/
 
   ?>
+
+    </div>
 
   </body>
 
