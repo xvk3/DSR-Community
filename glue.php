@@ -79,20 +79,20 @@
   //var_dump($obj);
 
   $sub = $obj['response']['players']['player'];
-  //echo count($sub);
 
-  // since there is the possibility there multiple calls to GetPlayerSummaries this will result in multiple json objects
-  // i need to combine them here into a single array which the following code will use
-  // just extract the ['player'][x] from all arrays and build a master
+  for($i = 0; $i < count($sub); $i+=1)  {
+    $ingame += $sub[$i]["gameid"] == "570940" ? 1 : 0;
+  }
+
   ?>
 
   <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>DSR-Community</title>
     <meta content="DSR-Community" property="go:title" />
-  <?php
-    echo "  <meta content=\"Monitoring " . count($master) . " Steam Profiles\" property=\"og:description\" />\n";
-  ?>
+<?php
+    echo "    <meta content=\"Monitoring " . count($master) . " Steam Profiles\n" . $ingame . " playing DSR now!\" property=\"og:description\" />\n";
+?>
     <meta content="http://www.xvk3.net/glue.php" property="og:url" />
     <meta content="#99FFCA" name="theme-color" />
     <style>
@@ -166,7 +166,7 @@
   </head>
   <body>
     <div class="container">
-  <?php
+<?php
 
   // do a first pass over the array and print those who are ingame
   for($i = 0; $i < count($sub); $i+=1)  {
@@ -185,78 +185,23 @@
   }
 
   function display_dsr($player) {
-    echo "    <div class=\"dsr\">\n";
-    echo "      <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
-    echo "      <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
-    echo "      <h1>" . $player['gameextrainfo'] . "</h1>\n";
-    echo "      <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
-    echo "    </div>\n";
+    echo "      <div class=\"dsr\">\n";
+    echo "        <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
+    echo "        <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
+    echo "        <h1>" . $player['gameextrainfo'] . "</h1>\n";
+    echo "        <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
+    echo "      </div>\n";
   }
 
   function display($player) {
-    echo "    <div class=\"reg\">\n";
-    echo "      <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
-    echo "      <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
-    echo "      <h1>" . $player['gameextrainfo'] . "</h1>\n";
-    echo "      <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
-    echo "    </div>\n";
+    echo "      <div class=\"reg\">\n";
+    echo "        <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
+    echo "        <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
+    echo "        <h1>" . $player['gameextrainfo'] . "</h1>\n";
+    echo "        <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
+    echo "      </div>\n";
   }
-
-/* 
-
-  old way
-
-  $master_array[] = array();
-
-  foreach($obj['friendslist']['friends'] as $elem)  {
-
-    $url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?key=" . $KEY . "&steamids=" . $elem['steamid'];
-    $xml = file_get_contents($url);
-    $obj = json_decode($xml, true);
-    $sub = $obj['response']['players']['player'][0];
-    array_push($master_array, $sub['steamid'], $sub);
-  }
-    $arr[] = array();
-    array_push($arr, "steamid", $sub['steamid']);
-    array_push($arr, "personaname", $sub['personaname']);
-    array_push($arr, "profileurl", $sub['profileurl']);
-    if(array_key_exists("gameextrainfo", $sub) && !empty($sub['gameextrainfo']))  {
-      array_push($arr, "gameextrainfo", $sub['gameextrainfo']);
-    }
-    array_push($arr, "lastlogoff", $sub['lastlogoff']);
-    array_push($arr, "profilestate", $sub['profilestate']);
-
-    array_push($master_array, $sub['steamid'], $arr);
-    echo $sub['steamid'] . "\n";
-  }
-
-  foreach($master_array as $friend) {
-    echo $friend['personaname'] . "\n";
-
-  }
-
-    echo "<div>";
-    echo "<img src=\"" . $sub['avatarfull'] . "\" alt=\"" . $sub['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">";
-    echo "<a href=\"" . $sub['profileurl'] . "\">" . $sub['personaname'] . "</a>";
-    echo "<h1>" . $sub['gameextrainfo'] . "</h1>";
-
-    echo "<p> Last Online: " . date('Y-m-d h:i:s',$sub['lastlogoff']) . "</p>";
-    
-    echo "</div>\n";
-
-    // 'avatarfull'
-    // 'personaname'
-    // 'profileurl'
-    // 'gameextrainfo'
-    // 'lastlogoff'
-
-
-  }*/
-
-  ?>
-
+?>
     </div>
-
   </body>
-
 </html>
