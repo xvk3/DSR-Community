@@ -39,8 +39,15 @@
   array_push($friends, "561199007281262");
   array_push($friends, "561199085632748");
 
-  // Ensure there are no duplicates in the array
+  // remove duplicate steamIDs
+  $raw_friends = $friends;
   $friends = array_unique($friends);
+ 
+  // console.log any duplicate values so they can be removed manually 
+  $duplicates = array_unique(array_diff_assoc($raw_friends, $friends));
+  if($duplicates) {
+    echo "<script type=\"text/javascript\">console.log(" . implode(",", $duplicates) . ");</script>\n";    
+  }
 
   if(count($friends) <= 100) {
 
