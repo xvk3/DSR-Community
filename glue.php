@@ -87,8 +87,12 @@
 
   $sub = $obj['response']['players']['player'];
 
+  $ingame = 0;
   for($i = 0; $i < count($sub); $i+=1)  {
-    $ingame += $sub[$i]["gameid"] == "570940" ? 1 : 0;
+    //$ingame += $sub[$i]["gameid"] == "570940" ? 1 : 0;
+    $gameid = isset($sub[$i]['gameid']) ? $sub[$i]['gameid'] : 0;
+    $ingame += $gameid == "570940" ? 1 : 0;
+
   }
 
   ?>
@@ -178,7 +182,8 @@
   // do a first pass over the array and print those who are ingame
   for($i = 0; $i < count($sub); $i+=1)  {
     $player = $obj['response']['players']['player'][$i];
-    if($player['gameid'] == "570940") {
+    $gameid = isset($player['gameid']) ? $player['gameid'] : 0;
+    if($gameid  == "570940") {
       display_dsr($player);
     }
   }
@@ -186,7 +191,8 @@
   // second pass for everyone else 
   for($i = 0; $i < count($sub); $i+=1)  {
     $player = $obj['response']['players']['player'][$i];
-    if($player['gameid'] != "570940") {
+    $gameid = isset($player['gameid']) ? $player['gameid'] : 0;
+    if($gameid != "570940") {
       display($player);
     }
   }
@@ -204,7 +210,6 @@
     echo "      <div class=\"reg\">\n";
     echo "        <img src=\"" . $player['avatarfull'] . "\" alt=\"" . $player['personaname'] . "'s Avatar\" width=\"100\" height=\"100\">\n";
     echo "        <a href=\"" . $player['profileurl'] . "\">" . $player['personaname'] . "</a>\n";
-    echo "        <h1>" . $player['gameextrainfo'] . "</h1>\n";
     echo "        <p> Last Online: " . date('Y-m-d h:i:s',$player['lastlogoff']) . "</p>\n";
     echo "      </div>\n";
   }
