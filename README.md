@@ -7,3 +7,4 @@
 - [ ] Option to add your own SteamID???
 - [ ] Automatically choose number of columns based on container width
 - [x] Add support for Discord embeds (very basic)
+- [ ] Fix bug when handling > 100 SteamIDs

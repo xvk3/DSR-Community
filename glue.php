@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
  
 <?php
 
@@ -49,7 +48,7 @@
     echo "<script type=\"text/javascript\">console.log(" . implode(",", $duplicates) . ");</script>\n";    
   }
 
-  if(count($friends) <= 100) {
+  if(count($friends) <= 200) {
 
     $ids = implode(",", $friends);
 
@@ -61,13 +60,12 @@
     for($i = 0; $i < count($sub); $i+=1)  {
       array_push($master, $obj['response']['players']['player'][$i]);
     }
-  } else {
+  } else {                                                 // currently bugged and causes php to hang...
     $start = 0;
-    while($start != count($friends) - 1)  {                // When $start is the size of the array (minus 1) it means we are done
+      while($start < count($friends) - 1) {                // When $start is the size of the array (minus 1) it means we are done
       $sub = array_slice($friends, $start, 100, false);    // Take 100 elements from $friends[$start]
       $start += count($sub);                               // Increment $start by number of elements taken (will be 100 until the last one)
-      $ids = implode(",", $sub);
- 
+      $ids = implode(",", $sub);                           // ",".join(sub)
       $url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?key=" . $KEY . "&steamids=" . $ids;
       $xml = file_get_contents($url);
       $obj = json_decode($xml, true);
@@ -77,7 +75,6 @@
         array_push($master, $obj['response']['players']['player'][$i]);
       } 
     }
-
   }
 
   $url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?key=" . $KEY . "&steamids=" . $ids;
